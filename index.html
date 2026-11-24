@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker | खर्च ट्रैकर</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6366f1" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0e0f1a" media="(prefers-color-scheme: dark)">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Expense Tracker">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💰 Expense Tracker <span class="hi">खर्च ट्रैकर</span></h1>
+            <p class="month-display" id="monthDisplay"></p>
+            <div class="theme-selector" id="themeSelector" role="group" aria-label="Choose color theme / रंग विषय चुनें">
+                <button class="theme-btn" data-theme="indigo" aria-label="Indigo / इंडिगो" title="Indigo"></button>
+                <button class="theme-btn" data-theme="emerald" aria-label="Emerald / एमरल्ड" title="Emerald"></button>
+                <button class="theme-btn" data-theme="rose" aria-label="Rose / रोज़" title="Rose"></button>
+                <button class="theme-btn" data-theme="amber" aria-label="Amber / एम्बर" title="Amber"></button>
+                <button class="theme-btn" data-theme="violet" aria-label="Violet / वायलेट" title="Violet"></button>
+                <button class="theme-btn" data-theme="cyan" aria-label="Cyan / सायन" title="Cyan"></button>
+                <button class="theme-btn" data-theme="orange" aria-label="Orange / ऑरेंज" title="Orange"></button>
+                <button class="theme-btn" data-theme="slate" aria-label="Slate / स्लेट" title="Slate"></button>
+            </div>
+        </header>
+
+        <section class="card add-expense">
+            <h2>➕ Add Expense <span class="hi">खर्च जोड़ें</span></h2>
+            <form id="expenseForm">
+                <div class="form-group">
+                    <label for="expenseName">Name <span class="hi">नाम</span></label>
+                    <input type="text" id="expenseName" placeholder="e.g., Lunch / दोपहर का खाना" required>
+                </div>
+                <div class="form-group">
+                    <label for="expenseAmount">Amount (₹) <span class="hi">रुपये</span></label>
+                    <input type="number" id="expenseAmount" placeholder="e.g., 150" min="1" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="expenseCategory">Category <span class="hi">श्रेणी</span></label>
+                    <select id="expenseCategory" required>
+                        <option value="">Select Category / श्रेणी चुनें</option>
+                        <option value="food">🍔 Food <span class="hi">खाना</span></option>
+                        <option value="travel">🚌 Travel <span class="hi">यात्रा</span></option>
+                        <option value="bills">📄 Bills <span class="hi">बिल्स</span></option>
+                        <option value="shopping">🛍️ Shopping <span class="hi">शॉपिंग</span></option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Add <span class="hi">जोड़ें</span></button>
+            </form>
+        </section>
+
+        <section class="card summary">
+            <h2>📊 Summary <span class="hi">सारांश</span></h2>
+            <div class="chart-container">
+                <canvas id="pieChart" width="280" height="280" aria-label="Expense pie chart by category / श्रेणी अनुसार खर्च पाई चार्ट"></canvas>
+                <div class="chart-legend" id="chartLegend"></div>
+            </div>
+            <div class="totals">
+                <div class="total-item">
+                    <span class="label">Total <span class="hi">कुल खर्च</span></span>
+                    <span class="amount" id="monthlyTotal">₹0</span>
+                </div>
+            </div>
+            <div class="category-totals" id="categoryTotals"></div>
+        </section>
+
+        <section class="card expenses-list">
+            <h2>📋 Expenses List <span class="hi">खर्च सूची</span></h2>
+            <ul id="expenseList" class="expense-list"></ul>
+            <p class="empty-state" id="emptyState">No expenses yet / कोई खर्च नहीं</p>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('SW registered:', reg.scope))
+            .catch(err => console.log('SW registration failed:', err));
+        });
+      }
+    </script>
+</body>
+</html>
